@@ -126,17 +126,21 @@ A fresh database has the `Admin` and `User` roles, but no users. For the first p
 deploy, set these in the deployment environment:
 
 ```bash
-Bootstrap__AdminEmail=admin@your-domain
-Bootstrap__AdminPassword=<generated secret>
-Bootstrap__AdminDisplayName=Docket Admin
+export Bootstrap__AdminEmail="admin@your-domain"
+export Bootstrap__AdminPassword="<generated secret>"
+export Bootstrap__AdminDisplayName="Docket Admin"
 ```
 
-The API creates the admin once and skips the step on later starts. Sign in, change the
-password, then remove the three bootstrap variables. If no admin exists and the variables are
+Replace the placeholders before running the commands.
+
+The API creates the admin once and skips the step on later starts. Sign in and store the
+password in your password manager, then remove the three bootstrap variables. A
+password-change screen is not part of this slice. If no admin exists and the variables are
 missing, production startup fails. Development only logs a warning.
 
-The refresh-token family migration revokes any legacy active tokens, so existing sessions
-sign in once after the upgrade.
+Run the refresh-token family migration with the previous app version stopped. The migration
+revokes all legacy active tokens, and the database rejects any token without a family, so
+existing sessions sign in once after the upgrade.
 
 ## Testing notes
 
