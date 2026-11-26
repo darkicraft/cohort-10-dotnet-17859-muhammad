@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Docket.Tests.Auth;
 
 [Collection(ApiCollection.Name)]
+[Trait("Category", "Integration")]
 public sealed class BootstrapAdminTests
 {
     private readonly ApiFixture _fixture;
