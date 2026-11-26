@@ -18,6 +18,9 @@ namespace Docket.Infrastructure.Persistence.Migrations
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
+            // Legacy replacement chains cannot be re-familied safely, so force one re-login.
+            migrationBuilder.Sql(
+                "UPDATE [RefreshTokens] SET [RevokedAtUtc] = SYSDATETIMEOFFSET() WHERE [RevokedAtUtc] IS NULL;");
             migrationBuilder.Sql("UPDATE [RefreshTokens] SET [FamilyId] = NEWID();");
 
             migrationBuilder.AddColumn<byte[]>(
