@@ -23,6 +23,11 @@ namespace Docket.Infrastructure.Persistence.Migrations
                 "UPDATE [RefreshTokens] SET [RevokedAtUtc] = SYSDATETIMEOFFSET() WHERE [RevokedAtUtc] IS NULL;");
             migrationBuilder.Sql("UPDATE [RefreshTokens] SET [FamilyId] = NEWID();");
 
+            migrationBuilder.AddCheckConstraint(
+                name: "CK_RefreshTokens_FamilyId_NotEmpty",
+                table: "RefreshTokens",
+                sql: "[FamilyId] <> '00000000-0000-0000-0000-000000000000'");
+
             migrationBuilder.AddColumn<byte[]>(
                 name: "RowVersion",
                 table: "RefreshTokens",
@@ -40,6 +45,10 @@ namespace Docket.Infrastructure.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropCheckConstraint(
+                name: "CK_RefreshTokens_FamilyId_NotEmpty",
+                table: "RefreshTokens");
+
             migrationBuilder.DropIndex(
                 name: "IX_RefreshTokens_FamilyId",
                 table: "RefreshTokens");

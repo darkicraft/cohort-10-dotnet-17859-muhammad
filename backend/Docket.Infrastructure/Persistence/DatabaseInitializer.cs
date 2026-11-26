@@ -50,6 +50,10 @@ public static class DatabaseInitializer
         string displayName,
         CancellationToken cancellationToken = default)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+        ArgumentException.ThrowIfNullOrWhiteSpace(displayName);
+
         await using var scope = services.CreateAsyncScope();
         await CreateBootstrapAdminAsync(
             scope.ServiceProvider,

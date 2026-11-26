@@ -109,6 +109,18 @@ public sealed class AuthService(
             return InvalidRefreshToken();
         }
 
+        if (stored.FamilyId == Guid.Empty)
+        {
+            // A token without a family can only come from an old writer. Reject and revoke it.
+            if (stored.RevokedAtUtc is null)
+            {
+                stored.RevokedAtUtc = now;
+                await database.SaveChangesAsync(cancellationToken);
+            }
+
+            return InvalidRefreshToken();
+        }
+
         if (stored.RevokedAtUtc is not null)
         {
             await RevokeFamilyAsync(stored.FamilyId, now, cancellationToken);
@@ -214,6 +226,11 @@ public sealed class AuthService(
 
     private async Task RevokeFamilyAsync(Guid familyId, DateTimeOffset now, CancellationToken cancellationToken)
     {
+        if (familyId == Guid.Empty)
+        {
+            return;
+        }
+
         // ExecuteUpdate is atomic and bypasses rowversion conflicts from concurrent rotations.
         await database.RefreshTokens
             .Where(token => token.FamilyId == familyId && token.RevokedAtUtc == null)
