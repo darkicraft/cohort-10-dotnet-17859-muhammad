@@ -20,3 +20,7 @@
 *.woff     binary
 *.woff2    binary
 *.ttf      binary
+
+# Generated files: collapse in review and exclude from language stats
+frontend/package-lock.json        linguist-generated=true
+backend/**/Migrations/**          linguist-generated=true
