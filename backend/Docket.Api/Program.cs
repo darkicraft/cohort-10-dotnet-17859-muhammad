@@ -96,7 +96,11 @@ if (app.Configuration.GetValue("Database:InitializeOnStartup", true))
     var migrateOnStartup = app.Configuration.GetValue("Database:MigrateOnStartup", true) &&
         (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"));
 
-    await app.Services.InitializeDatabaseAsync(migrateOnStartup);
+    await app.Services.InitializeDatabaseAsync(
+        migrateOnStartup,
+        app.Configuration,
+        app.Environment.IsProduction(),
+        app.Logger);
 }
 
 app.Run();

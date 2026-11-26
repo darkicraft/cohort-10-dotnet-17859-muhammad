@@ -120,6 +120,24 @@ stored as SHA-256 hashes, and travel in an `HttpOnly`, `SameSite=Lax` cookie sco
 `/api/v1/auth`. The development signing key in `appsettings.Development.json` is for local
 use only; production must supply `Jwt__SigningKey` (32+ characters) through the environment.
 
+### First admin
+
+A fresh database has the `Admin` and `User` roles, but no users. For the first production
+deploy, set these in the deployment environment:
+
+```bash
+Bootstrap__AdminEmail=admin@your-domain
+Bootstrap__AdminPassword=<generated secret>
+Bootstrap__AdminDisplayName=Docket Admin
+```
+
+The API creates the admin once and skips the step on later starts. Sign in, change the
+password, then remove the three bootstrap variables. If no admin exists and the variables are
+missing, production startup fails. Development only logs a warning.
+
+The refresh-token family migration revokes any legacy active tokens, so existing sessions
+sign in once after the upgrade.
+
 ## Testing notes
 
 Unit tests and the health smoke test need no Docker. Auth integration tests start a real
