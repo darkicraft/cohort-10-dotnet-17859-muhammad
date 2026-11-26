@@ -48,10 +48,7 @@ uploads/
 backups/
 
 # Local agent tooling and working artifacts
-.opencode/*
-!.opencode/skills/
-.opencode/skills/*
-!.opencode/skills/natural-copy/
+.opencode/
 .impeccable/review/
 .impeccable/questions/
 .impeccable/mocks/
