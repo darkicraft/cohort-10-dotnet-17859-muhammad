@@ -129,7 +129,7 @@ deploy, set these in the deployment environment:
 export Bootstrap__AdminEmail='admin@your-domain'
 export Bootstrap__AdminDisplayName='Docket Admin'
 
-read -r -s -p "Admin password: " Bootstrap__AdminPassword
+IFS= read -r -s -p "Admin password: " Bootstrap__AdminPassword
 echo
 export Bootstrap__AdminPassword
 ```
