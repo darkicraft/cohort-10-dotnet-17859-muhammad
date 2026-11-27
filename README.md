@@ -126,12 +126,17 @@ A fresh database has the `Admin` and `User` roles, but no users. For the first p
 deploy, set these in the deployment environment:
 
 ```bash
-export Bootstrap__AdminEmail="admin@your-domain"
-export Bootstrap__AdminPassword="<generated secret>"
-export Bootstrap__AdminDisplayName="Docket Admin"
+export Bootstrap__AdminEmail='admin@your-domain'
+export Bootstrap__AdminDisplayName='Docket Admin'
+
+read -r -s -p "Admin password: " Bootstrap__AdminPassword
+echo
+export Bootstrap__AdminPassword
 ```
 
-Replace the placeholders before running the commands.
+Replace the placeholders before running the commands. In an automated deployment, set
+`Bootstrap__AdminPassword` from the platform secret store instead of typing it. The prompt
+keeps the password out of shell history and prevents `$` characters from expanding.
 
 The API creates the admin once and skips the step on later starts. Sign in and store the
 password in your password manager, then remove the three bootstrap variables. A
